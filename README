@@ -5,3 +5,4 @@ The original code was written by Nadav Rotem.
 Since the original code was not released under any form of source code control, and has not advanced for some time, I moved it to a public GIT repository in order to advance it further.
 Near term goals are to update the code to the latest LLVM relase (currently the code requires LLVM 2.5).
 
+This code is licensed under the GPL v3 license, according to the terms in www.c-to-verilog.com
