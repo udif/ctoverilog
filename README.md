@@ -44,21 +44,18 @@ Now build LLVM
 
     make
 
-Install gcc front end to LLVM
+Follow instructions from llvm-gcc4.2-2.5.source/README.LLVM to install the gcc front end to LLVM:
 
     cd $HOME
     wget http://llvm.org/releases/2.5/llvm-gcc-4.2-2.5.source.tar.gz
-
-Follow instructions from llvm-gcc4.2-2.5.source/README.LLVM :
-
     mkdir llvm-gcc
     cd llvm-gcc
-    tar xvfz llvm-gcc-4.2-2.5.source.tar.gz
+    tar xvfz ../llvm-gcc-4.2-2.5.source.tar.gz
     mkdir obj install
     cd obj
     LLVMOBJDIR=~/llvm-2.5
     BUILDOPTIONS=LLVM_VERSION_INFO=2.5
-    ../llvm-gcc4.2-2.5.source/configure --prefix=`pwd`/../install --program-prefix=llvm- --enable-llvm=$LLVMOBJDIR --enable-languages=c,c++  --disable-multilib
+    ../llvm-gcc4.2-2.5.source/configure --prefix=`pwd`/../install --program-prefix=llvm- --enable-llvm=$LLVMOBJDIR --enable-languages=c,c++ --disable-multilib
     make $BUILDOPTIONS
     make install
 
