@@ -16,6 +16,7 @@ Installing and compiling the code (This has been tried on 64-bit CentOS 7.1):
     sudo yum install git bison flex glibc-devel.i686 gcc-g++ cmake
     
 **Here we start**
+
 Get source code
 
     cd $HOME
