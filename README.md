@@ -40,6 +40,7 @@ Prepare default configuration
 Fix the configuration to add the Verilog directory
 
     sed -i -e 's/CppBackend/CppBackend Verilog/g' Makefile.config
+    sed -i '/Sparc/a\  Verilog' CMakeLists.txt
 
 Now build LLVM
 
