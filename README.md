@@ -35,7 +35,7 @@ Clone the ctoverilog repository. Notice the target directory name. This is impor
 
 Prepare default configuration
 
-    ./configure
+    ./configure --enable-shared
 
 Fix the configuration to add the Verilog directory
 
