@@ -35,16 +35,16 @@ Clone the ctoverilog repository. Notice the target directory name. This is impor
 
 Prepare default configuration
 
-    ./configure --enable-shared
+    ./configure
 
 Fix the configuration to add the Verilog directory
 
     sed -i -e 's/CppBackend/CppBackend Verilog/g' Makefile.config
     sed -i '/Sparc/a\  Verilog' CMakeLists.txt
 
-Now build LLVM
+Now build LLVM. Notice we rebuild twice. The first make fails on lcc link problems. Rerunning ./configure and make will fix that. This is workaround until I figure out the root cause for this problem.
 
-    make
+    make ; ./configure ; make
 
 Follow instructions from llvm-gcc4.2-2.5.source/README.LLVM to install the gcc front end to LLVM:
 
