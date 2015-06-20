@@ -1,5 +1,5 @@
 TMPFILE="/tmp/file.bc"
-LLVM="$HOME/llvm/Release"
+LLVM="$HOME/llvm-2.5/Release"
 LLVM_GCC="$HOME/llvm-gcc/install/"
 
  echo "This is the VCC command line tool. Usage vcc.sh source.c dst.v"
