@@ -17,7 +17,7 @@
 #include "llvm/Analysis/LoopInfo.h"
 #include "llvm/CodeGen/IntrinsicLowering.h"
 #include "llvm/Transforms/Scalar.h"
-#include "llvm/Target/TargetMachineRegistry.h"
+#include "llvm/Target/TargetRegistry.h"
 #include "llvm/Target/TargetAsmInfo.h"
 #include "llvm/Target/TargetData.h"
 #include "llvm/Support/CallSite.h"
@@ -32,7 +32,7 @@
 #include "llvm/Config/config.h"
 #include <algorithm>
 #include <sstream>
-#include "llvm/Support/raw_ostream.h"
+#include "llvm/Support/FormattedStream.h"
 
 #include <llvm/ADT/DenseMap.h>
 #include "llvm/Transforms/Utils/Cloning.h"
@@ -46,9 +46,19 @@ using namespace llvm;
 using std::string;
 using std::stringstream;
 using llvm::TargetData; //JAWAD
+
+extern "C" void LLVMInitializeVerilogTarget() {
+  // Register the target.
+  RegisterTargetMachine<VTargetMachine> X(TheVerilogTarget);
+}
+
+// Register the target.
+//Target llvm::TheVerilogTarget;
+//extern "C" void LLVMInitializeVerilogTargetInfo() { 
+//  RegisterTarget<> X(TheVerilogTarget, "v", "Verilog backend");
+//}
+
 namespace xVerilog {
-    // Register the target.
-    static RegisterTarget<VTargetMachine> MXVVE("v", "Verilog backend");
   
     /// VWriter - This class is the main chunk of code that converts an LLVM
     /// module to a Verilog translation unit.
@@ -56,7 +66,7 @@ namespace xVerilog {
 
         public:
             static char ID;
-            VWriter(llvm::raw_ostream &o) 
+            VWriter(formatted_raw_ostream &o) 
                 : FunctionPass((intptr_t)&ID),Out(o) {}
 
             virtual const char *getPassName() const { return "verilog backend"; }
@@ -74,7 +84,7 @@ namespace xVerilog {
             bool runOnFunction(Function &F);
 
         private:
-            llvm::raw_ostream &Out;
+            formatted_raw_ostream &Out;
             Mangler *Mang;
     };
 
@@ -202,8 +212,8 @@ namespace xVerilog {
 //                       External Interface declaration
 //===----------------------------------------------------------------------===//
 
-bool VTargetMachine::addPassesToEmitWholeFile(PassManager &PM, llvm::raw_ostream &o, 
-        CodeGenFileType FileType, bool Fast) {
+bool VTargetMachine::addPassesToEmitWholeFile(PassManager &PM, llvm::formatted_raw_ostream &o, 
+        CodeGenFileType FileType, CodeGenOpt::Level level) {
     if (FileType != TargetMachine::AssemblyFile) return true;
 
     PM.add(new xVerilog::VWriter(o));

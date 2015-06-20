@@ -1,4 +1,4 @@
-/* Nadav Rotem  - C-to-Verilog.com */
+///* Nadav Rotem  - C-to-Verilog.com */
 #include "listScheduler.h"
 #include "instPriority.h"
 
@@ -306,7 +306,7 @@ namespace xVerilog {
 
         //print list Scheduler
         // debug
-        cerr<<"---=="<<this->getBB()->getName()<<"["<<this->length()<<"]==---\n";
+        cerr<<"---=="<<this->getBB()->getNameStr()<<"["<<this->length()<<"]==---\n";
         for (vector<resourceUnit*>::iterator un = m_units.begin(); un!=m_units.end();++un) {
             cerr<<(*un)->toString();
         }

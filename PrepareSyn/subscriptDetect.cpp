@@ -47,7 +47,7 @@ namespace xVerilog {
                     if (ConstantInt *con = dyn_cast<ConstantInt>(bin->getOperand(param_num))) {
                         unsigned int current_off = con->getValue().getZExtValue();
                         // create a new constant
-                        ConstantInt *ncon = ConstantInt::get(APInt(bitWidth, offset + current_off));
+                        ConstantInt *ncon = ConstantInt::get(getGlobalContext(), APInt(bitWidth, offset + current_off));
                         bin->setOperand(param_num,ncon);
                     }
                 }
@@ -72,7 +72,7 @@ namespace xVerilog {
         unsigned int bitWidth = cast<IntegerType>(index->getType())->getBitWidth();
         // New add instruction, place it before the GetElementPtrInst 
         BinaryOperator* newIndex = BinaryOperator::Create(Instruction::Add, 
-                ConstantInt::get(APInt(bitWidth, offset)) , index, "i_offset", ptr);
+                ConstantInt::get(getGlobalContext(), APInt(bitWidth, offset)) , index, "i_offset", ptr);
         // Tell GetElementPtrInst to use it instead of the normal PHI
         ptr->setOperand(1,newIndex); 
     }

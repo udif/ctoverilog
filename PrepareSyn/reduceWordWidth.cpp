@@ -67,10 +67,10 @@ namespace xVerilog {
                     unsigned int shlVal = con->getValue().getZExtValue();
                     unsigned int newBitLen = bitWidth - shlVal;
                     if (bitWidth != newBitLen) {
-                        CastInst* tv0 = new TruncInst(v0, IntegerType::get(newBitLen),"trunc_shl",calc);
-                        CastInst* tv1 = new TruncInst(v1, IntegerType::get(newBitLen),"trunc_shl",calc);
+                        CastInst* tv0 = new TruncInst(v0, IntegerType::get(getGlobalContext(), newBitLen),"trunc_shl",calc);
+                        CastInst* tv1 = new TruncInst(v1, IntegerType::get(getGlobalContext(), newBitLen),"trunc_shl",calc);
                         BinaryOperator* newAnd = BinaryOperator::Create(Instruction::LShr, tv0, tv1,"reduced_and",calc);
-                        CastInst* castedAnd = new SExtInst(newAnd, IntegerType::get(bitWidth),"exand",calc);
+                        CastInst* castedAnd = new SExtInst(newAnd, IntegerType::get(getGlobalContext(), bitWidth),"exand",calc);
                         calc->replaceAllUsesWith(castedAnd);
                         return true;
                     }
@@ -90,10 +90,10 @@ namespace xVerilog {
                     unsigned int combinedBitWidth = std::max(bitWidth0, bitWidth1) + 1;
                     if (combinedBitWidth < currentBitWidth) {
 
-                        CastInst* cast0 = new SExtInst(i0->getOperand(0), IntegerType::get(combinedBitWidth),"exand",calc);
-                        CastInst* cast1 = new SExtInst(i1->getOperand(0), IntegerType::get(combinedBitWidth),"exand",calc);
+                        CastInst* cast0 = new SExtInst(i0->getOperand(0), IntegerType::get(getGlobalContext(), combinedBitWidth),"exand",calc);
+                        CastInst* cast1 = new SExtInst(i1->getOperand(0), IntegerType::get(getGlobalContext(), combinedBitWidth),"exand",calc);
                         BinaryOperator* newAdd = BinaryOperator::Create(Instruction::Add, cast0, cast1,"reduced_and",calc);
-                        CastInst* castedAnd = new SExtInst(newAdd, IntegerType::get(currentBitWidth),"exand",calc);
+                        CastInst* castedAnd = new SExtInst(newAdd, IntegerType::get(getGlobalContext(), currentBitWidth),"exand",calc);
                         calc->replaceAllUsesWith(castedAnd);
                         return true;
                     }
@@ -115,10 +115,10 @@ namespace xVerilog {
                     unsigned int active = con->getValue().getActiveBits(); 
                     if (bitWidth != active && bitWidth1 != active) {
 
-                        CastInst* tv0 = new TruncInst(v0, IntegerType::get(active),"trunc",calc);
-                        CastInst* tv1 = new TruncInst(v1, IntegerType::get(active),"trunc",calc);
+                        CastInst* tv0 = new TruncInst(v0, IntegerType::get(getGlobalContext(), active),"trunc",calc);
+                        CastInst* tv1 = new TruncInst(v1, IntegerType::get(getGlobalContext(), active),"trunc",calc);
                         BinaryOperator* newAnd = BinaryOperator::Create(Instruction::And, tv0, tv1,"reduced_and",calc);
-                        CastInst* castedAnd = new SExtInst(newAnd, IntegerType::get(bitWidth),"exand",calc);
+                        CastInst* castedAnd = new SExtInst(newAnd, IntegerType::get(getGlobalContext(), bitWidth),"exand",calc);
                         calc->replaceAllUsesWith(castedAnd);
                         return true;
                     }

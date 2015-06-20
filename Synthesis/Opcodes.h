@@ -59,7 +59,7 @@ namespace xVerilog {
                 );
 
         /// @brief Clone an identical DelayInst
-        virtual CastInst *clone() const;
+        virtual CastInst *clone(LLVMContext &Context) const;
 
         /// @brief Methods for support type inquiry through isa, cast, and dyn_cast:
         static inline bool classof(const DelayInst *) { return true; }
@@ -79,7 +79,7 @@ namespace xVerilog {
         public:
             InInst(const Type *Ty, Value *value, ExternamModule *where);
             InInst(const InInst &In);
-            virtual InInst *clone() const;
+            virtual InInst *clone(LLVMContext &Context) const;
 
             const char *getOpcodeName() const { return "*end-of-list-inst*"; }
             const Type* getType() const { return m_type; }

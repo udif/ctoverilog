@@ -195,7 +195,7 @@ namespace xVerilog {
 
                         // Create the new PHI Node to replace the node
                         if (!dyn_cast<StoreInst>(ib) && !ib->isTerminator()) {
-                            std::string newname = "glue" + (*it)->getName();
+                            std::string newname = "glue" + (*it)->getName().str();
 
                             //PHINode* np = PHINode::Create(ib->getType(), "glue", *it);
                             PHINode* np = PHINode::Create(ib->getType(), newname, *it);
@@ -248,7 +248,7 @@ namespace xVerilog {
                        // Only clone when you have more than one #uses
                        (instructionPriority::getLocalUses(it,bb) >1)) {
 
-                   Instruction* cloned = it->clone(); // duplicate it
+                   Instruction* cloned = it->clone(getGlobalContext()); // duplicate it
                     it->getParent()->getInstList().insert(it, cloned);
                     //Can also do: cloned->insertBefore(it); // on newer LLVMS
                     cloned->setName("cloned");
@@ -348,7 +348,7 @@ namespace xVerilog {
 
                     //TODO:May overflow
                     unsigned int val = (c0->getValue().getZExtValue() + c1->getValue().getZExtValue());
-                    ConstantInt *ncon = ConstantInt::get(APInt(bitWidth, val));
+                    ConstantInt *ncon = ConstantInt::get(getGlobalContext(), APInt(bitWidth, val));
                     add->replaceAllUsesWith(ncon);
                     add->eraseFromParent();
                     return;

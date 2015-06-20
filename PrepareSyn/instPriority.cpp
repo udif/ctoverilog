@@ -6,7 +6,7 @@ namespace xVerilog {
     string instructionPriority::toString() {
         stringstream ss;
 
-        ss<<"InstructionPriority for \""<<BB->getName()<<"\"["<<getMaxDepth()<<"]\n";
+        ss<<"InstructionPriority for \""<<BB->getNameStr()<<"\"["<<getMaxDepth()<<"]\n";
         for (unsigned int i=0; i<getMaxDepth(); i++) {
             ss<<i<<":"<<std::endl;
             for (BasicBlock::const_iterator it = BB->begin(); it != BB->end(); ++it) {

@@ -4,6 +4,7 @@
 #define LLVM_SCHED_UTILS_H
 
 #include "llvm/Support/Mangler.h"
+#include "llvm/Type.h"
 
 #include <iostream>
 #include <string>
@@ -79,7 +80,7 @@ namespace {
         if (CI && !isa<GlobalValue>(CI)) {
             stringstream ss;
             const Type* Ty = CI->getType();
-            if (Ty == Type::Int1Ty)
+            if (Ty == Type::getInt1Ty( getGlobalContext()))
                 ss<<((CI->getZExtValue() ? "1" : "0"));
             else {
                 ss << "(";
@@ -112,9 +113,10 @@ namespace {
         if(isa<ConstantPointerNull> (Operand)){ //JAWAD
  		 return "(0) /* NULL */";
 	}
-	//TODO: pass mang to this method ...
-        Name = mang->getValueName(Operand);
-        
+        if(isa<GlobalValue> (Operand)){
+        	Name = mang->getMangledName(cast<GlobalValue>(Operand));
+	}
+        assert(0); /* udif - need to take care of */
 
         return Name;
     }

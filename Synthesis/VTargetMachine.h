@@ -7,21 +7,25 @@
 
 namespace llvm {
 
+//class formatted_raw_ostream;
+
 struct VTargetMachine : public TargetMachine {
   const TargetData DataLayout;       // Calculates type size & alignment
 
-  VTargetMachine(const Module &M, const std::string &FS)
-    : DataLayout(&M) {}
+  VTargetMachine(const Target &T, const std::string &TT,
+                 const std::string &FS)
+    : TargetMachine(T) {}
 
   virtual bool WantsWholeFile() const { return true; }
-  virtual bool addPassesToEmitWholeFile(PassManager &PM, raw_ostream &Out,
-                                        CodeGenFileType FileType, bool Fast);
+  virtual bool addPassesToEmitWholeFile(PassManager &PM,
+                                        formatted_raw_ostream &Out,
+                                        CodeGenFileType FileType,
+                                        CodeGenOpt::Level level);
 
-  // This class always works, but shouldn't be the default in most cases.
-  static unsigned getModuleMatchQuality(const Module &M) { return 1; }
-  
-  virtual const TargetData *getTargetData() const { return &DataLayout; }
+  virtual const TargetData *getTargetData() const { return 0; }
 };
+
+extern Target TheVerilogTarget;
 
 } // End llvm namespace
 

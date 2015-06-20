@@ -9,10 +9,10 @@ namespace xVerilog {
     vector<Instruction*> globalVarRegistry::m_garbage;
 
     /// initial values
-    Value* globalVarRegistry::Zero1 = ConstantInt::get(Type::Int1Ty, 0);
-    Value* globalVarRegistry::One1 = ConstantInt::get(Type::Int1Ty, 1);
-    Value* globalVarRegistry::Zero32 = ConstantInt::get(Type::Int32Ty, 0);
-    Value* globalVarRegistry::One32 = ConstantInt::get(Type::Int32Ty, 1);
+    Value* globalVarRegistry::Zero1 = ConstantInt::get(Type::getInt1Ty(getGlobalContext()), 0);
+    Value* globalVarRegistry::One1 = ConstantInt::get(Type::getInt1Ty(getGlobalContext()), 1);
+    Value* globalVarRegistry::Zero32 = ConstantInt::get(Type::getInt32Ty(getGlobalContext()), 0);
+    Value* globalVarRegistry::One32 = ConstantInt::get(Type::getInt32Ty(getGlobalContext()), 1);
 
     void globalVarRegistry::destroy() {
         // destroy all variables that should be destroied
@@ -40,11 +40,11 @@ namespace xVerilog {
     }
 
     const Type* globalVarRegistry::bitNumToType(int bitnum){
-        if (bitnum==64) return Type::Int64Ty;
-        if (bitnum==32) return Type::Int32Ty;
-        if (bitnum==16) return Type::Int16Ty;
-        if (bitnum==8) return Type::Int8Ty;
-        if (bitnum==1) return Type::Int1Ty;
+        if (bitnum==64) return Type::getInt64Ty(getGlobalContext());
+        if (bitnum==32) return Type::getInt32Ty(getGlobalContext());
+        if (bitnum==16) return Type::getInt16Ty(getGlobalContext());
+        if (bitnum==8) return Type::getInt8Ty(getGlobalContext());
+        if (bitnum==1) return Type::getInt1Ty(getGlobalContext());
         cerr<<"Unsupported bit addressing mode; "<<bitnum<<"\n";
         abort();
     }
@@ -54,13 +54,13 @@ namespace xVerilog {
         if (m_map[varName] != NULL) return m_map[varName];
         GlobalVariable *glob;  
         if (pointer) {
-            glob = new GlobalVariable(llvm::PointerType::get((bitNumToType(bits)),0),false,
+            glob = new GlobalVariable(getGlobalContext(), llvm::PointerType::get((bitNumToType(bits)),0),false,
                     GlobalValue::ExternalLinkage,0,varName,m_module);
             //glob = new GlobalVariable(llvm::PointerType::get((bitNumToType(bits))),false,
             //        GlobalValue::ExternalLinkage,0,varName,m_module);
         } else { /* int */
             const Type *t = bitNumToType(bits); 
-            glob = new GlobalVariable(t, false,
+            glob = new GlobalVariable(getGlobalContext(), t, false,
                     GlobalValue::ExternalLinkage,0,varName,m_module);
         }
 
@@ -72,7 +72,7 @@ namespace xVerilog {
         if (m_map[varName] != NULL) { 
                 return m_map[varName];
         }
-        GlobalVariable *glob = new GlobalVariable(type, false, GlobalValue::ExternalLinkage,0,varName,m_module);
+        GlobalVariable *glob = new GlobalVariable(getGlobalContext(), type, false, GlobalValue::ExternalLinkage,0,varName,m_module);
         m_map[varName] = glob;
         return glob;
     } 

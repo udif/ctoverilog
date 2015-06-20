@@ -532,7 +532,7 @@ namespace xVerilog {
                 // for each instruction in each cycle in each LS
                 for (vector<Instruction*>::iterator I = inst.begin(); I!=inst.end(); ++I) {
                     // if has a return type, print it as a variable name
-                    if ((*I)->getType() != Type::VoidTy) {
+                    if ((*I)->getType() != Type::getVoidTy(getGlobalContext())) {
                         ss << " ";
                         ss << getTypeDecl((*I)->getType(), false, GetValueName(*I));
                         ss << ";   /*local var*/\n";
@@ -545,7 +545,7 @@ namespace xVerilog {
             for (BasicBlock::iterator bit = bb->begin(); bit != bb->end(); bit++) { 
                 if (dyn_cast<PHINode>(bit)) {
                     // if has a return type, print it as a variable name 
-                    if ((bit)->getType() != Type::VoidTy) { 
+                    if ((bit)->getType() != Type::getVoidTy(getGlobalContext())) { 
                         ss << " "; 
                         ss << getTypeDecl((bit)->getType(), false, GetValueName(bit)); 
                         ss << ";   /*phi var*/\n"; 
